@@ -1,0 +1,17 @@
+[user]
+	name = morrissimo
+[alias]
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	ds = diff --staged
+[color]
+	diff = auto
+[pivotal "feature"]
+	integration-branch = develop
+[pivotal "chore"]
+	integration-branch = develop
+[pivotal "bug"]
+	integration-branch = master
+[init]
+	templatedir = ~/.git_template
+[push]
+	default = current
