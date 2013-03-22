@@ -3,6 +3,10 @@
 [alias]
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	ds = diff --staged
+        # these next two are specific to python projects and might be better off living in repo-local configs
+        # cf. http://blog.sionide21.com/post/45921820346/a-git-alias-to-pep-8-the-files-you-have-changed
+        pep8 = !git status -s | awk '{print $2}' | grep '.py' | xargs pep8 --ignore=E501
+        pyflakes = !git status -s | awk '{print $2}' | grep '.py' | xargs pyflakes
 [color]
 	diff = auto
 [pivotal "feature"]
