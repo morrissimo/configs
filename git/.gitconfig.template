@@ -3,6 +3,10 @@
 [alias]
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	ds = diff --staged
+	mvim = !vim -p `git status | grep modified | awk {'print $3'}`
+	# aliases from http://durdn.com/blog/2012/11/22/must-have-git-aliases-advanced-examples/
+ 	# List commits showing changed files
+ 	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
         # these next two are specific to python projects and might be better off living in repo-local configs
         # cf. http://blog.sionide21.com/post/45921820346/a-git-alias-to-pep-8-the-files-you-have-changed
         pep8 = !git status -s | awk '{print $2}' | grep '.py' | xargs pep8 --ignore=E501
