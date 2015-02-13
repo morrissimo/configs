@@ -1,16 +1,26 @@
-[user]
-	name = morrissimo
 [alias]
-	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-	ds = diff --staged
-	mvim = !vim -p `git status | grep modified | awk {'print $3'}`
-	# aliases from http://durdn.com/blog/2012/11/22/must-have-git-aliases-advanced-examples/
- 	# List commits showing changed files
- 	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
-        # these next two are specific to python projects and might be better off living in repo-local configs
-        # cf. http://blog.sionide21.com/post/45921820346/a-git-alias-to-pep-8-the-files-you-have-changed
-        pep8 = !git status -s | awk '{print $2}' | grep '.py' | xargs pep8 --ignore=E501
-        pyflakes = !git status -s | awk '{print $2}' | grep '.py' | xargs pyflakes
+        pep8 = !git status -s | egrep -v '^[[:space:]]*?[D]' | awk '{print $2}' | grep '.py' | xargs pep8 -r --ignore=E501,E128
+        pyflakes = !git status -s | egrep -v '^[[:space:]]*?[D]' | awk '{print $2}' | grep '.py' | xargs pyflakes
+        #flake8 = !git status -s | egrep -v '^[[:space:]]+?[D]' | awk '{print $2}' | grep '.py' | xargs flake8 --ignore=E501,E128
+        #lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+        # this second lg form came from: http://blog.izs.me/page/3 (01/2013)
+        lg = log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%an%d%Creset %s %Cgreen(%cr)%Creset' --date=relative
+        ; from http://www.jukie.net/bart/blog/pimping-out-git-log, with author displayed
+        lgb = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --branches
+        lga = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative  --all
+        lgba = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --branches --all
+        ds = diff --staged
+        d = diff
+        s = status
+        a = add
+        ap = add -p
+        grepout = "!git checkout $(git branch | grep -i '$1')"
+        # aliases from http://durdn.com/blog/2012/11/22/must-have-git-aliases-advanced-examples/
+        # List commits showing changed files
+        ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+        mvim = !vim -p `git status --porcelain | awk {'print $2'}`
+        undo-commit = reset --soft HEAD^
+        diff-branch = "!git diff $(git rev-parse --abbrev-ref HEAD) --not $1"
 [color]
 	diff = auto
 [pivotal "feature"]
