@@ -1,3 +1,5 @@
+set t_Co=256
+
 "{{{Language-specific settings
 
 " python
@@ -78,3 +80,7 @@ autocmd FileChangedShell * echoe "Warning: file changed on disk"
 set autoread
 
 "}}}
+
+" override terrible default comment color
+" see http://vim.wikia.com/wiki/File:Xterm-color-table.png
+hi Comment ctermfg=22
