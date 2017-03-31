@@ -1,86 +1,90 @@
-set t_Co=256
+" python-optimized Vim config per https://realpython.com/blog/python/vim-and-python-a-match-made-in-heaven/
 
-"{{{Language-specific settings
-
-" python
-let python_highlighting_all=1
-
-"}}}
-
-
-"{{{Misc Settings
-"
-" copypasta from 
-" http://stackoverflow.com/a/171558
-" http://phuzz.org/vimrc.html
-
-" Necesary  for lots of cool vim things
 set nocompatible
+filetype off
 
-set ruler       " show cursor pos all of the time
-set nobackup    " do not use a backup file
-set noswapfile  " do not use a swap file
-"set title       " show title in console title bar
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-" This shows what you are typing as a command.  I love this!
-set showcmd
-set scrolloff=3
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
 
-" search stuff
-set hlsearch    " highlight searches
-set incsearch   " do incremental searches
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
 
-" Folding Stuffs
-"set foldmethod=marker
-set foldmethod=indent
-set foldlevel=99    " initially open (virtually) all folds
-set foldnestmax=2
-"highlight Folded guibg=black guifg=blue
-" toggle folding with space bar - woot
-nnoremap <space> za
+" Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
+Plugin 'vim-scripts/indentpython.vim'
+"Plugin 'scrooloose/syntastic'
+"Plugin 'nvie/vim-flake8'
+" colorscheme plugins
+Plugin 'jnurmine/Zenburn'
+"Plugin 'altercation/vim-colors-solarized'
 
-" Needed for Syntax Highlighting and stuff
-filetype on
-filetype plugin on
-syntax enable
-set grepprg=grep\ -nH\ $*
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
 
-" Who doesn't like autoindent?
-set autoindent
+filetype plugin indent on    " required
 
-" Spaces are better than a tab character
-set expandtab
-set smarttab
+set noswapfile
+" turn on line numbering
+set nu
 
-" Who wants an 8 character tab?  Not me!
-set shiftwidth=4
-set softtabstop=4
+set backspace=indent,eol,start
 
-" Cool tab completion stuff
+" set file name previewing/completion options (eg, for opening files)
+set wildmode=longest,list,full
 set wildmenu
-set wildmode=list:longest,full
 
-" Enable mouse support in console
-set mouse=a
+"------------Start Python PEP 8 stuff----------------
+"" Number of spaces that a pre-existing tab is equal to.
+au BufRead,BufNewFile *py,*pyw,*.c,*.h set tabstop=4
 
-" Got backspace?
-set backspace=2
+"spaces for indents
+au BufRead,BufNewFile *.py,*pyw set shiftwidth=4
+au BufRead,BufNewFile *.py,*.pyw set expandtab
+au BufRead,BufNewFile *.py set softtabstop=4
 
-" Line Numbers
-set number
-" bind F2 to toggle line numbers
-nnoremap <F2> :set nonumber! number?<CR>
+" Use the below highlight group when displaying bad whitespace is desired.
+highlight BadWhitespace ctermbg=red guibg=red
 
-" Set off the other paren
-highlight MatchParen ctermbg=2
+" Display tabs at the beginning of a line in Python mode as bad.
+au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
+" Make trailing whitespace be flagged as bad.
+au BufRead,BufNewFile *.html,*.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
-" display a file change notification - http://stackoverflow.com/a/924411
-autocmd FileChangedShell * echoe "Warning: file changed on disk"
-" auto-reload a file if it changes on disk (and doesn't have any unsaved mods)
-set autoread
+" Wrap text after a certain number of characters
+"au BufRead,BufNewFile *.py,*.pyw, set textwidth=100
 
-"}}}
+" Use UNIX (\n) line endings.
+au BufNewFile *.py,*.pyw,*.c,*.h set fileformat=unix
 
-" override terrible default comment color
-" see http://vim.wikia.com/wiki/File:Xterm-color-table.png
-hi Comment ctermfg=22
+" Set the default file encoding to UTF-8:
+set encoding=utf-8
+
+" For full syntax highlighting:
+let python_highlight_all=1
+syntax on
+
+" Keep indentation level from previous line:
+autocmd FileType python set autoindent
+"----------Stop python PEP 8 stuff--------------
+
+" better tab behavior for js/html/css
+au BufNewFile,BufRead *.js, *.html, *.css set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+
+" switch colorscheme based on gui or nogui
+"set background=dark
+let g:zenburn_high_Contrast=1
+let g:zenburn_transparent = 1
+let g:zenburn_force_dark_Background = 1
+colorscheme zenburn
+
+" syntastic plugin config
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
