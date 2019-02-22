@@ -1,3 +1,8 @@
+# This is Git's per-user configuration file.
+# It lives at ~/.gitconfig
+[user]
+        name = <your name>
+        email = <your email>
 [alias]
         pep8 = !git status -s | egrep -v '^[[:space:]]*?[D]' | awk '{print $2}' | grep '.py' | xargs pep8 -r --ignore=E501,E128
         pyflakes = !git status -s | egrep -v '^[[:space:]]*?[D]' | awk '{print $2}' | grep '.py' | xargs pyflakes
@@ -21,15 +26,17 @@
         mvim = !vim -p `git status --porcelain | awk {'print $2'}`
         undo-commit = reset --soft HEAD^
         diff-branch = "!git diff $(git rev-parse --abbrev-ref HEAD) --not $1"
+        clean-finished-branches = "!git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -D"
 [color]
-	diff = auto
-[pivotal "feature"]
-	integration-branch = develop
-[pivotal "chore"]
-	integration-branch = develop
-[pivotal "bug"]
-	integration-branch = master
+    diff = auto
 [init]
-	templatedir = ~/.git_template
+    templatedir = ~/.git_template
 [push]
-	default = current
+    default = current
+[core]
+    excludesfile = ~/.gitignore
+[flake8]
+    # check all tracked files (instead of only staged files)
+    lazy = true
+    # prevent commits if yer shit is fugly
+    #strict = true

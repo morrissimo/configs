@@ -1,0 +1,24 @@
+# misc python junk
+*.pickle
+*.pyc
+*.pyo
+
+dist/
+build/
+**/*.egg-info/
+.pytest_cache
+*cache*
+.coverage
+
+# virtualenvs
+env/
+venv/
+
+# Sensitive files
+*secret*
+.env
+.env*
+*.env
+
+# misc OS cruft
+.DS_Store
