@@ -1,0 +1,36 @@
+
+# Automatically activate/deactivate a project's virtualenv environment if a
+# 've' (virtual environment) directory exists in the root
+# immortalized at https://gist.github.com/morrissimo/e4eca3a826f1466fd3afi
+# TODO: handle multiple virtualenv dir names
+
+function workon_cwd {
+    # Check that this is a git repo
+    GIT_DIR=`git rev-parse --git-dir 2> /dev/null`
+    if [ $? == 0 ]; then
+        # Find the repo root and check for virtualenv name
+        PROJECT_ROOT=`dirname "$GIT_DIR"`
+        ENV_NAME="$PROJECT_ROOT/env"
+        # Check if we've changed repo.  If so, deactivate the environment before activating (possible) new one.
+        if [ "$VIRTUAL_ENV" -a "$VIRTUAL_ENV" != "$ENV_NAME" ]; then
+            deactivate && unset CD_VIRTUAL_ENV
+        fi
+        if [ -d "$ENV_NAME" ]; then
+            # Activate the environment only if it is not already active
+            if [ "$VIRTUAL_ENV" != "$ENV_NAME" ]; then
+                if [ -e "$ENV_NAME/bin/activate" ]; then
+                    source "$ENV_NAME/bin/activate" && export CD_VIRTUAL_ENV="$ENV_NAME"
+                fi
+            fi
+        fi
+    # We've just left the repo, deactivate the environment
+    elif [ $CD_VIRTUAL_ENV ]; then
+        deactivate && unset CD_VIRTUAL_ENV
+    fi
+}
+# New cd function that does the virtualenv magic
+# also "ls -la" the new dir since that's pretty much the next command 78.34% of the time anyway
+function venv_cd {
+    cd "$@" && workon_cwd; ll;
+}
+alias cd="venv_cd"
