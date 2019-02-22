@@ -1,4 +1,4 @@
-configs
+dotfiles
 =======
 
 vimrc and the like
